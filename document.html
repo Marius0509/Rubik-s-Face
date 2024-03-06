@@ -1,0 +1,115 @@
+<head>
+    <style>
+        #face, #colourPicker, #selectedColour {
+            border-collapse: collapse;
+            background-color: grey;
+        }
+
+        #face, #colourPicker {
+            cursor: pointer
+        }
+
+            #face td, #colourPicker td, #selectedColour td {
+                border: 2px solid black;
+            }
+
+            #face td {
+                width: 150px;
+                height: 150px;
+            }
+
+            #colourPicker td, #selectedColour td {
+                width: 75px;
+                height: 75px;
+            }
+
+            #colourPicker td {
+                background-color: white;
+                border: 2px solid black;
+                box-sizing: border-box;
+            }
+
+        p, button {
+            font-size: 20px;
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+
+        div {
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div style="float: left;">
+        <table id="face">
+            <tr>
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+            </tr>
+            <tr>
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+            </tr>
+            <tr>
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+                <td onmousedown="changeColour(this)">
+            </tr>
+        </table>
+        <button style="float: right; margin-top: 10px" onclick="clearFace()">Clear</button>
+    </div>
+    <div>
+        <p>Select colour:</p>
+        <table id="colourPicker">
+            <tr>
+                <td style="background-color: white;" onclick="selectColour(this)">
+                <td style="background-color: yellow;" onclick="selectColour(this)">
+                <td style="background-color: green;" onclick="selectColour(this)">
+                <td style="background-color: blue;" onclick="selectColour(this)">
+                <td style="background-color: red;" onclick="selectColour(this)">
+                <td style="background-color: orange;" onclick="selectColour(this)">
+                    <!--<td style="background-color: grey;" onclick="selectColour(this)">-->
+            </tr>
+        </table>
+        <p>Selected colour:</p>
+        <table id="selectedColour">
+            <tr>
+                <td style="background-color: grey;">
+            </tr>
+        </table>
+        <p>Scramble:</p>
+    </div>
+    <script>
+        function selectColour(cell) {
+            document.getElementById('selectedColour').rows[0].cells[0].style.backgroundColor = cell.style.backgroundColor;
+        }
+        function changeColour(cell) {
+            cell.style.backgroundColor = document.getElementById('selectedColour').rows[0].cells[0].style.backgroundColor;
+        }
+        function clearFace() {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    document.getElementById('face').rows[i].cells[j].style.backgroundColor = "grey";
+                }
+            }
+        }
+        window.onload = function() {
+            
+        };
+    </script>
+</body>
+
+<!--
+TO DO:
+    add wildcards (grey)
+    if vertical display then 2nd div under 1st, not to the right
+    color multiple stickers with the selected color if hovering over them with mouse pressed
+-->
