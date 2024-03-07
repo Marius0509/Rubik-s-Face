@@ -88,9 +88,6 @@
         <p id="scrambleText">Scramble:</p>
     </div>
     <script>
-        function selectColour(cell) {
-            document.getElementById('selectedColour').rows[0].cells[0].style.backgroundColor = cell.style.backgroundColor;
-        }
         let colourCode = {
             'white': 0,
             'yellow': 1,
@@ -99,6 +96,10 @@
             'red': 4,
             'orange': 5
         };
+        let scrambles = [];
+        function selectColour(cell) {
+            document.getElementById('selectedColour').rows[0].cells[0].style.backgroundColor = cell.style.backgroundColor;
+        }
         function changeColour(cell) {
             cell.style.backgroundColor = document.getElementById('selectedColour').rows[0].cells[0].style.backgroundColor;
             let code = 0;
@@ -121,17 +122,8 @@
                 }
             }
         }
-        let scrambles = [];
         window.onload = function () {
-            fetch('test.txt')
-                .then(response => response.text())
-                .then(lines => {
-                    for (const line of lines.split('\n')) {
-                        scrambles.push(line);
-                    }
-                })
-                .catch(error => console.error('Error:', error.message));
-            console.log(scrambles.length);
+            // load scrambles from file
         };
     </script>
 </body>
