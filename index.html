@@ -29,7 +29,7 @@
             box-sizing: border-box;
         }
 
-        p, button {
+        p, button, #loading {
             font-size: 20px;
         }
 
@@ -46,46 +46,51 @@
     </style>
 </head>
 <body>
-    <div style="float: left;">
-        <table id="face">
-            <tr>
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-            </tr>
-            <tr>
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-            </tr>
-            <tr>
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-                <td onmousedown="changeColour(this)">
-            </tr>
-        </table>
-        <button style="float: right; margin-top: 10px" onclick="clearFace()">Clear</button>
+    <div id="loading">
+        <p>Loading...</p>
     </div>
-    <div>
-        <p>Select colour:</p>
-        <table id="colourPicker">
-            <tr>
-                <td style="background-color: white;" onclick="selectColour(this)">
-                <td style="background-color: yellow;" onclick="selectColour(this)">
-                <td style="background-color: green;" onclick="selectColour(this)">
-                <td style="background-color: blue;" onclick="selectColour(this)">
-                <td style="background-color: red;" onclick="selectColour(this)">
-                <td style="background-color: orange;" onclick="selectColour(this)">
+    <div id="content" style="display: none">
+        <div style="float: left;">
+            <table id="face">
+                <tr>
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                </tr>
+                <tr>
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                </tr>
+                <tr>
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                    <td onmousedown="changeColour(this)">
+                </tr>
+            </table>
+            <button style="float: right; margin-top: 10px" onclick="clearFace()">Clear</button>
+        </div>
+        <div>
+            <p>Select colour:</p>
+            <table id="colourPicker">
+                <tr>
+                    <td style="background-color: white;" onclick="selectColour(this)">
+                    <td style="background-color: yellow;" onclick="selectColour(this)">
+                    <td style="background-color: green;" onclick="selectColour(this)">
+                    <td style="background-color: blue;" onclick="selectColour(this)">
+                    <td style="background-color: red;" onclick="selectColour(this)">
+                    <td style="background-color: orange;" onclick="selectColour(this)">
                     <!--<td style="background-color: grey;" onclick="selectColour(this)">-->
-            </tr>
-        </table>
-        <p>Selected colour:</p>
-        <table id="selectedColour">
-            <tr>
-                <td style="background-color: grey;">
-            </tr>
-        </table>
-        <p id="scrambleText">Scramble:</p>
+                </tr>
+            </table>
+            <p>Selected colour:</p>
+            <table id="selectedColour">
+                <tr>
+                    <td style="background-color: grey;">
+                </tr>
+            </table>
+            <p id="scrambleText">Scramble:</p>
+        </div>
     </div>
     <script>
         let colourCode = {
@@ -113,17 +118,26 @@
                     code = code * 6 + x;
                 }
             }
-            document.getElementById('scrambleText').innerText = 'Scramble: ' + code;
+            document.getElementById('scrambleText').innerText = 'Scramble: ' + scrambles[code];
         }
         function clearFace() {
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 3; j++) {
-                    document.getElementById('face').rows[i].cells[j].style.backgroundColor = "grey";
+                    document.getElementById('face').rows[i].cells[j].style.backgroundColor = 'grey';
                 }
             }
         }
-        window.onload = function () {
-            // load scrambles from file
+        async function loadScrambles(filename) {
+            const response = await fetch(filename);
+            const data = await response.text();
+            data.split('\n').forEach(scramble => scrambles.push(scramble));
+        }
+        window.onload = async function () {
+            for (let i = 1; i <= 8; i++) {
+                await loadScrambles('data/' + i + '.txt');
+            }
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
         };
     </script>
 </body>
